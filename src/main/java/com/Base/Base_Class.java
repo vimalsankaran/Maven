@@ -23,7 +23,7 @@ import org.openqa.selenium.TakesScreenshot;
 public class Base_Class {
 
 	public static WebDriver driver;
-	public static void openwebapp(String browser, String url) {
+	public static WebDriver browser(String browser) {
 		if(browser.equalsIgnoreCase("chrome")) {
 			System.setProperty("webdriver.chrome.driver", 
 					System.getProperty("user.dir")+"\\driver\\chromedriver.exe");
@@ -35,7 +35,15 @@ public class Base_Class {
 			driver = new FirefoxDriver();
 		}
 		driver.manage().window().maximize();
+		return driver;
+	}
+	
+	public static void geturl(String url) {
 		driver.get(url);
+	}
+	
+	public static void clear(WebElement element) {
+		element.clear();
 	}
 	public static void clickk(WebElement element) {
 		element.click();

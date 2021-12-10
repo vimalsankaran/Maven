@@ -6,7 +6,8 @@ import com.Base.Base_Class;
 
 public class Runner_Class extends Base_Class {
 public static void main(String[] args) throws Throwable {
-    openwebapp("chrome", "http://automationpractice.com/index.php");	
+    browser("chrome");
+    geturl("http://automationpractice.com/index.php");	
     gettitle();
     WebElement login = driver.findElement(By.className("login"));
     clickk(login);
