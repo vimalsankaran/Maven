@@ -1,11 +1,15 @@
 package com.Runner;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 import org.openqa.selenium.WebDriver;
-
 import com.Base.Base_Class;
 import com.Manager.Page_Object_Manager;
+import adactin_Reader.File_Reader_Manager1;
 
 public class Adactin_Runner extends Base_Class{
+	
+	static Logger log = Logger.getLogger(Adactin_Runner.class);
 	
 	public static WebDriver driver = browser("chrome");
 	
@@ -13,22 +17,31 @@ public class Adactin_Runner extends Base_Class{
 	
 	public static void main(String[] args) throws Throwable {
 		
-	    geturl("https://adactinhotelapp.com");
+		PropertyConfigurator.configure("log4j.properties");
+		
+		String url = File_Reader_Manager1.getInstanceFRM().getInstanceCR().getUrl();
+		
+	    geturl(url);
 				
 		getcurrenturl();
 		
 		sleep(4000);
 		
 		//login page
-		input(pom.getLogin().getUsername(), "psvimalbe");
+		log.info("Navigated to Login Page");
+		String username = File_Reader_Manager1.getInstanceFRM().getInstanceCR().getUsername();
+		String password = File_Reader_Manager1.getInstanceFRM().getInstanceCR().getPassword();
 		
-		input(pom.getLogin().getPassword(), "Vimal2590");
+		input(pom.getLogin().getUsername(), username);
+		
+		input(pom.getLogin().getPassword(), password);
 		
 		clickk(pom.getLogin().getLogin_Btn());
 		
 		sleep(3000);
 		
 		//searchpage
+		log.info("Navigated to Search Page");
 		dropDown(pom.getSearch().getLoc(), "byindex", "2");
 		
 		dropDown(pom.getSearch().getHotel(), "byindex", "2");
@@ -39,11 +52,14 @@ public class Adactin_Runner extends Base_Class{
 		
 		clear(pom.getSearch().getDatein());
 		
-		input(pom.getSearch().getDatein(), "12/12/2021");
+		String checkin = File_Reader_Manager1.getInstanceFRM().getInstanceCR().getCheckin();
+		String checkout = File_Reader_Manager1.getInstanceFRM().getInstanceCR().getCheckout();
+		
+		input(pom.getSearch().getDatein(), checkin);
 		
 		clear(pom.getSearch().getDateout());
 		
-		input(pom.getSearch().getDateout(), "14/12/2021");
+		input(pom.getSearch().getDateout(), checkout);
 		
 		dropDown(pom.getSearch().getAdult(), "byindex", "4");
 		
@@ -54,6 +70,7 @@ public class Adactin_Runner extends Base_Class{
 		sleep(4000);
 		
 		//SelectPage
+		log.info("Navigated to Search Page");
 		timeout(10);
 		
 		clickk(pom.getSelect().getRadio1());
@@ -63,24 +80,33 @@ public class Adactin_Runner extends Base_Class{
 		sleep(2000);
 		
 		//BookingPage
+		log.info("Navigated to Booking Page");
 		
 		timeout(10);
 		
-		input(pom.getBook().getFname(), "Vimal");
+		String firstname = File_Reader_Manager1.getInstanceFRM().getInstanceCR().getFirstname();
+		String lastname = File_Reader_Manager1.getInstanceFRM().getInstanceCR().getLastname();
+		String address = File_Reader_Manager1.getInstanceFRM().getInstanceCR().getAddress();
+		String address1 = File_Reader_Manager1.getInstanceFRM().getInstanceCR().getAddress1();
+		String address2 = File_Reader_Manager1.getInstanceFRM().getInstanceCR().getAddress2();
+		String cardno = File_Reader_Manager1.getInstanceFRM().getInstanceCR().getCardno();
+		String cvv = File_Reader_Manager1.getInstanceFRM().getInstanceCR().getCardcvv();
 		
-		input(pom.getBook().getLname(), "Sankaran");
+		input(pom.getBook().getFname(), firstname);
 		
-		input(pom.getBook().getAddress(), "No.320, Shirley Street,");
+		input(pom.getBook().getLname(), lastname);
+		
+		input(pom.getBook().getAddress(), address);
 		
 		keyenter();
 		
-		input(pom.getBook().getAddress(), "Melbourne VIC 3000,");
+		input(pom.getBook().getAddress(), address1);
 		
 		keyenter();
 		
-		input(pom.getBook().getAddress(), "Australia");
+		input(pom.getBook().getAddress(), address2);
 		
-		input(pom.getBook().getCcnum(), "4225858514581458");
+		input(pom.getBook().getCcnum(), cardno);
 		
 		dropDown(pom.getBook().getDropcctype(), "byindex", "2");
 		
@@ -88,13 +114,14 @@ public class Adactin_Runner extends Base_Class{
 		
 		dropDown(pom.getBook().getDropccyear(), "byvalue", "2022");
 		
-		input(pom.getBook().getCvv(), "465");
+		input(pom.getBook().getCvv(), cvv);
 		
 		clickk(pom.getBook().getBook());
 		
 		sleep(4000);
 		
 		//ConfirmationPage
+		log.info("Navigated to Confirmation Page");
 		timeout(10);
 		
 		System.out.println("Booking Details:");
@@ -194,6 +221,7 @@ public class Adactin_Runner extends Base_Class{
 		sleep(4000);
 		
 		//Itinerary Page
+		log.info("Navigated to Itinerary Page");
 		
 		takescreenshot("C:\\Users\\Vimal\\eclipse-workspace\\Dec_Mini_Project\\screenshot\\adactin.png");
 	

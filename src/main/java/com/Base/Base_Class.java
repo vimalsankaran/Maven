@@ -4,10 +4,14 @@ import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import javax.imageio.ImageIO;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -15,6 +19,17 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.io.FileHandler;
 import org.openqa.selenium.support.ui.Select;
+
+import ru.yandex.qatools.ashot.AShot;
+import ru.yandex.qatools.ashot.Screenshot;
+import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
@@ -234,6 +249,33 @@ public class Base_Class {
 		File f1 = new File(location);
 		FileHandler.copy(f, f1);
 	} 
+	
+	public static void ashot(String location) throws Throwable {
+		
+		Screenshot screenshot = new AShot().shootingStrategy(ShootingStrategies.viewportPasting(1000)).takeScreenshot(driver);
+
+		ImageIO.write(screenshot.getImage(), "png", new File(location));
+	}	
+	public static String value;
+	public static String particulardata(String path, int sheetindex, int row_Index, int cell_Index) throws IOException {
+		File f = new File(path);
+		FileInputStream fis = new FileInputStream(f);
+		@SuppressWarnings("resource")
+		Workbook wb = new XSSFWorkbook(fis);
+		Sheet sheetAt = wb.getSheetAt(sheetindex);
+		Row row = sheetAt.getRow(row_Index);
+		Cell cell = row.getCell(cell_Index);
+		CellType cellType = cell.getCellType();
+		if (cellType.equals(CellType.STRING)) {
+			 value = cell.getStringCellValue();
+		}
+		else if (cellType.equals(CellType.NUMERIC)) {
+			double numericCellValue = cell.getNumericCellValue();
+			int val = (int) numericCellValue;
+			value = String.valueOf(val);	
+		}
+         return value;
+	}
 	
 	
 	
